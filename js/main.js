@@ -35,27 +35,55 @@ const generatedItemsCount = 25;
 const likesMin = 15;
 const likesMax = 250;
 
+const getUniqueRandomNumbersArray = function () {
+  const randomNumbersStorage = [];
+  const firstRandomNumber = getRandomIntInclusive(1, generatedItemsCount);
+  randomNumbersStorage.push(firstRandomNumber);
+  while (randomNumbersStorage.length < generatedItemsCount) {
+    const randomNumber = getRandomIntInclusive(1, generatedItemsCount)
+    if (randomNumbersStorage.includes(randomNumber)) {
+      getRandomIntInclusive(1, generatedItemsCount);
+    } else {
+      randomNumbersStorage.push(randomNumber);
+    }
+  }
+  return randomNumbersStorage;
+};
+
+const itemsIdArray = getUniqueRandomNumbersArray();
+const itemsPhotoNumberArray = getUniqueRandomNumbersArray();
+const commentIdArray = getUniqueRandomNumbersArray();
+
+const giveArrayNumber = function (array) {
+  const randomIndex = getRandomIntInclusive(0, array.length - 1);
+  const randomNumber = array[randomIndex];
+  array.splice(randomIndex, 1);
+  return randomNumber;
+};
+
 const getRandomArrayElement = (elements) => elements[getRandomIntInclusive(0, elements.length - 1)];
 
-const generateComment = function() {
+
+const generateComment = function () {
   return {
-    id: getRandomIntInclusive(1, generatedItemsCount),
+    id: giveArrayNumber(commentIdArray),
     avatar: 'img/avatar/-' + getRandomIntInclusive(1, generatedItemsCount) + '.svg',
     message: 'Generated',
     name: getRandomArrayElement(commentNames),
   };
 };
 
-const generateObject = function() {
-
+const generateObject = function () {
   return {
-    id: getRandomIntInclusive(1, generatedItemsCount),
-    url: 'photos/' + getRandomIntInclusive(1, generatedItemsCount) + '.jpg',
+    id: giveArrayNumber(itemsIdArray),
+    url: 'photos/' + giveArrayNumber(itemsPhotoNumberArray) + '.jpg',
     description: getRandomArrayElement(photoDescriptions),
     likes: getRandomIntInclusive(likesMin, likesMax),
     comments: generateComment(),
   };
 };
 
-const items = Array.from({length: generatedItemsCount}, generateObject);
-//console.log(items);
+const items = Array.from({
+  length: generatedItemsCount
+}, generateObject);
+console.log(items);
