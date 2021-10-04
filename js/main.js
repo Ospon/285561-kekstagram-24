@@ -1,6 +1,8 @@
 const GENERATED_ITEMS_COUNT = 25;
 const LIKES_MIN_VALUE = 15;
-const LIKES_MAX_VALUE = 250;
+const LIKES_MAX_VALUE = 200;
+const MAX_GENERATED_COMMENTS_COUNT = 5;
+const AVATARS_LENGTH = 6;
 
 const COMMENT_NAMES = [
   'Петер Саган',
@@ -40,14 +42,14 @@ function getRandomIntInclusive(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min; //Максимум и минимум включаются
 }
 
-const getUniqueRandomNumbersArray = function () {
+function getUniqueRandomNumbersArray(maxStorageSize) {
   const randomNumbersStorage = [];
-  const firstRandomNumber = getRandomIntInclusive(1, GENERATED_ITEMS_COUNT);
+  const firstRandomNumber = getRandomIntInclusive(1, maxStorageSize);
   randomNumbersStorage.push(firstRandomNumber);
-  while (randomNumbersStorage.length < GENERATED_ITEMS_COUNT) {
-    const randomNumber = getRandomIntInclusive(1, GENERATED_ITEMS_COUNT);
+  while (randomNumbersStorage.length < maxStorageSize) {
+    const randomNumber = getRandomIntInclusive(1, maxStorageSize);
     if (randomNumbersStorage.includes(randomNumber)) {
-      getRandomIntInclusive(1, GENERATED_ITEMS_COUNT);
+      getRandomIntInclusive(1, maxStorageSize);
     } else {
       randomNumbersStorage.push(randomNumber);
     }
@@ -55,9 +57,11 @@ const getUniqueRandomNumbersArray = function () {
   return randomNumbersStorage;
 };
 
-const postIdArray = getUniqueRandomNumbersArray();
-const postPhotoNumberArray = getUniqueRandomNumbersArray();
-const commentIdArray = getUniqueRandomNumbersArray();
+const maxCommentsCount = GENERATED_ITEMS_COUNT * MAX_GENERATED_COMMENTS_COUNT;
+
+const postIdArray = getUniqueRandomNumbersArray(GENERATED_ITEMS_COUNT);
+const postPhotoNumberArray = getUniqueRandomNumbersArray(GENERATED_ITEMS_COUNT);
+const commentIdArray = getUniqueRandomNumbersArray(maxCommentsCount);
 
 function getValueFromArray(array) {
   const randomIndex = getRandomIntInclusive(0, array.length - 1);
@@ -71,7 +75,7 @@ const getRandomArrayElement = (elements) => elements[getRandomIntInclusive(0, el
 function generateComment() {
   return {
     id: getValueFromArray(commentIdArray),
-    avatar: `img/avatar/-${getRandomIntInclusive(1, GENERATED_ITEMS_COUNT)}.svg`,
+    avatar: `img/avatar/-${getRandomIntInclusive(1, AVATARS_LENGTH)}.svg`,
     message: `${getRandomArrayElement(commentMessageArray)} ${getRandomArrayElement(commentMessageArray)}`,
     name: getRandomArrayElement(COMMENT_NAMES),
   };
@@ -83,10 +87,13 @@ function generateObject() {
     url: `photos/${getValueFromArray(postPhotoNumberArray)}.jpg`,
     description: getRandomArrayElement(PHOTO_DESCRIPTIONS),
     likes: getRandomIntInclusive(LIKES_MIN_VALUE, LIKES_MAX_VALUE),
-    comments: generateComment(),
+    comments: Array.from({
+      length: getRandomIntInclusive(1, MAX_GENERATED_COMMENTS_COUNT),
+    }, generateComment),
   };
 }
 
 const items = Array.from({
   length: GENERATED_ITEMS_COUNT,
 }, generateObject);
+console.log(items);
