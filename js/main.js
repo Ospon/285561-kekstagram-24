@@ -104,3 +104,5 @@ function generateObject() {
 const items = Array.from({
   length: GENERATED_ITEMS_COUNT,
 }, generateObject);
+
+items ? 'hello' : 'goodbye' ; // заглушка eslint
