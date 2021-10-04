@@ -55,7 +55,7 @@ function getUniqueRandomNumbersArray(maxStorageSize) {
     }
   }
   return randomNumbersStorage;
-};
+}
 
 const maxCommentsCount = GENERATED_ITEMS_COUNT * MAX_GENERATED_COMMENTS_COUNT;
 
@@ -72,11 +72,19 @@ function getValueFromArray(array) {
 
 const getRandomArrayElement = (elements) => elements[getRandomIntInclusive(0, elements.length - 1)];
 
+function getCommentMessage (messageArray) {
+  const counterStorage = getRandomIntInclusive(1, 2);
+  if (counterStorage === 1) {
+    return  `${getRandomArrayElement(messageArray)}`;
+  }
+  return `${getRandomArrayElement(messageArray)} ${getRandomArrayElement(messageArray)}`;
+}
+
 function generateComment() {
   return {
     id: getValueFromArray(commentIdArray),
     avatar: `img/avatar/-${getRandomIntInclusive(1, AVATARS_LENGTH)}.svg`,
-    message: `${getRandomArrayElement(commentMessageArray)} ${getRandomArrayElement(commentMessageArray)}`,
+    message: getCommentMessage(commentMessageArray),
     name: getRandomArrayElement(COMMENT_NAMES),
   };
 }
@@ -96,4 +104,3 @@ function generateObject() {
 const items = Array.from({
   length: GENERATED_ITEMS_COUNT,
 }, generateObject);
-console.log(items);
