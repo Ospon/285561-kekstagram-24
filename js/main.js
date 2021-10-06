@@ -3,6 +3,7 @@ const LIKES_MIN_VALUE = 15;
 const LIKES_MAX_VALUE = 200;
 const MAX_GENERATED_COMMENTS_COUNT = 5;
 const AVATARS_LENGTH = 6;
+const MAX_COMMENT_SENTENCE_SIZE = 2;
 
 const COMMENT_NAMES = [
   'Петер Саган',
@@ -42,19 +43,9 @@ function getRandomIntInclusive(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min; //Максимум и минимум включаются
 }
 
-function getUniqueRandomNumbersArray(maxStorageSize) {
-  const randomNumbersStorage = [];
-  const firstRandomNumber = getRandomIntInclusive(1, maxStorageSize);
-  randomNumbersStorage.push(firstRandomNumber);
-  while (randomNumbersStorage.length < maxStorageSize) {
-    const randomNumber = getRandomIntInclusive(1, maxStorageSize);
-    if (randomNumbersStorage.includes(randomNumber)) {
-      getRandomIntInclusive(1, maxStorageSize);
-    } else {
-      randomNumbersStorage.push(randomNumber);
-    }
-  }
-  return randomNumbersStorage;
+function getUniqueRandomNumbersArray(storageSize) {
+  const randomNumbersStorage = [...Array(storageSize)];
+  return randomNumbersStorage.map((it, index) => index + 1).sort(() => (Math.random() > .5) ? 1 : -1);
 }
 
 const maxCommentsCount = GENERATED_ITEMS_COUNT * MAX_GENERATED_COMMENTS_COUNT;
@@ -62,6 +53,7 @@ const maxCommentsCount = GENERATED_ITEMS_COUNT * MAX_GENERATED_COMMENTS_COUNT;
 const postIdArray = getUniqueRandomNumbersArray(GENERATED_ITEMS_COUNT);
 const postPhotoNumberArray = getUniqueRandomNumbersArray(GENERATED_ITEMS_COUNT);
 const commentIdArray = getUniqueRandomNumbersArray(maxCommentsCount);
+
 
 function getValueFromArray(array) {
   const randomIndex = getRandomIntInclusive(0, array.length - 1);
@@ -73,11 +65,8 @@ function getValueFromArray(array) {
 const getRandomArrayElement = (elements) => elements[getRandomIntInclusive(0, elements.length - 1)];
 
 function getCommentMessage (messageArray) {
-  const counterStorage = getRandomIntInclusive(1, 2);
-  if (counterStorage === 1) {
-    return  `${getRandomArrayElement(messageArray)}`;
-  }
-  return `${getRandomArrayElement(messageArray)} ${getRandomArrayElement(messageArray)}`;
+  const sentencesCount = getRandomIntInclusive(1, MAX_COMMENT_SENTENCE_SIZE);
+  return messageArray.sort(() => (Math.random() > .5) ? 1 : -1).slice(0, sentencesCount).join(' ');
 }
 
 function generateComment() {
