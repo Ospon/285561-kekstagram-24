@@ -27,9 +27,16 @@ const PHOTO_DESCRIPTIONS = [
   'Колумбийский профессиональный шоссейный велогонщик, выступающий c 2018 года за команду мирового тура «Ineos Grenadiers». Чемпион Колумбии 2018 года в индивидуальной гонке.',
 ];
 
-const COMMENT_MESSAGE = 'Всё отлично! В целом всё неплохо. Но не всё. Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально. Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше. Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше. Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!';
-
-const commentMessageArray = COMMENT_MESSAGE.replace(/([.?!])\s*(?=[А-Я])/g, '$1|').split('|');
+const COMMENT_MESSAGES = ['Всё отлично!',
+  'В целом всё неплохо.',
+  ' Но не всё.',
+  'Когда вы делаете фотографию, хорошо бы убирать палец из кадра.',
+  'В конце концов это просто непрофессионально.',
+  'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
+  'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше. ',
+  'Лица у людей на фотке перекошены, как будто их избивают.',
+  'Как можно было поймать такой неудачный момент?!',
+];
 
 const checkStringLength = (stringValue, stringMaxLength) => stringValue.length < stringMaxLength;
 checkStringLength('Hello world', 20);
@@ -54,17 +61,11 @@ const postIdArray = getUniqueRandomNumbersArray(GENERATED_ITEMS_COUNT);
 const postPhotoNumberArray = getUniqueRandomNumbersArray(GENERATED_ITEMS_COUNT);
 const commentIdArray = getUniqueRandomNumbersArray(maxCommentsCount);
 
-
-function getValueFromArray(array) {
-  const randomIndex = getRandomIntInclusive(0, array.length - 1);
-  const randomNumber = array[randomIndex];
-  array.splice(randomIndex, 1);
-  return randomNumber;
-}
+const getValueFromArray = (array) => array.pop();
 
 const getRandomArrayElement = (elements) => elements[getRandomIntInclusive(0, elements.length - 1)];
 
-function getCommentMessage (messageArray) {
+function getCommentMessage(messageArray) {
   const sentencesCount = getRandomIntInclusive(1, MAX_COMMENT_SENTENCE_SIZE);
   return messageArray.sort(() => (Math.random() > .5) ? 1 : -1).slice(0, sentencesCount).join(' ');
 }
@@ -73,7 +74,7 @@ function generateComment() {
   return {
     id: getValueFromArray(commentIdArray),
     avatar: `img/avatar/-${getRandomIntInclusive(1, AVATARS_LENGTH)}.svg`,
-    message: getCommentMessage(commentMessageArray),
+    message: getCommentMessage(COMMENT_MESSAGES),
     name: getRandomArrayElement(COMMENT_NAMES),
   };
 }
@@ -94,4 +95,4 @@ const items = Array.from({
   length: GENERATED_ITEMS_COUNT,
 }, generateObject);
 
-items ? 'hello' : 'goodbye' ; // заглушка eslint
+items ? 'hello' : 'goodbye'; // заглушка eslint
