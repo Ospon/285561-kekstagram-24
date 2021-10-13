@@ -5,6 +5,9 @@ import {
 const picturesContainer = document.querySelector('.pictures');
 const picturesTemplate = document.querySelector('#picture').content;
 
+const pictureTitle = picturesContainer.querySelector('.pictures__title');
+pictureTitle.classList.remove('visually-hidden');
+
 const picturesListFragment = document.createDocumentFragment();
 
 items.forEach(({url, likes, comments}) => {
