@@ -1,4 +1,4 @@
-import { items } from './generate-data.js';
+/* import { items } from './generate-data.js';
 import { toggleWindowBlocker } from '../utils/window-blocker.js';
 import { isEscapeKey } from '../utils/keys-checks.js';
 
@@ -29,7 +29,6 @@ function closeBigPicture () {
   closeBugPictureButton.removeEventListener('click', closeBigPicture);
 }
 
-
 usersPicturesContainer.addEventListener('click', (evt) => {
   console.log(evt.target.src);
   const pictureStorage = evt.target.src;
@@ -38,4 +37,4 @@ usersPicturesContainer.addEventListener('click', (evt) => {
   console.log(arrayElement);
 
   openBigPicture();
-});
+}); */
