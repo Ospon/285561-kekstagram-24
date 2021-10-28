@@ -4,7 +4,7 @@ const effectValue = imageEditor.querySelector('.effect-level__value');
 const imagePreview = imageEditor.querySelector('.img-upload__preview');
 const CHROME_EFFECT = {
   className: 'effects__preview--chrome',
-  value: 'chrome',
+  name: 'chrome',
   sliderMinRange: 0,
   sliderMaxRange: 1,
   sliderStep: 0.1,
@@ -14,7 +14,7 @@ const CHROME_EFFECT = {
 };
 const SEPIA_EFFECT = {
   className: 'effects__preview--sepia',
-  value: 'sepia',
+  name: 'sepia',
   sliderMinRange: 0,
   sliderMaxRange: 1,
   sliderStep: 0.1,
@@ -24,7 +24,7 @@ const SEPIA_EFFECT = {
 };
 const MARVIN_EFFECT = {
   className: 'effects__preview--marvin',
-  value: 'marvin',
+  name: 'marvin',
   sliderMinRange: 0,
   sliderMaxRange: 100,
   sliderStep: 1,
@@ -34,7 +34,7 @@ const MARVIN_EFFECT = {
 };
 const PHOBOS_EFFECT = {
   className: 'effects__preview--phobos',
-  value: 'phobos',
+  name: 'phobos',
   sliderMinRange: 0,
   sliderMaxRange: 3,
   sliderStep: 0.1,
@@ -44,7 +44,7 @@ const PHOBOS_EFFECT = {
 };
 const HEAT_EFFECT = {
   className: 'effects__preview--heat',
-  value: 'heat',
+  name: 'heat',
   sliderMinRange: 1,
   sliderMaxRange: 3,
   sliderStep: 0.1,
@@ -52,15 +52,24 @@ const HEAT_EFFECT = {
   styleProperty: 'brightness',
   stylePropertyValue: '',
 };
-const NONE_EFFECT = 'none';
+const NONE_EFFECT = {
+  className: '',
+  name: 'none',
+  sliderMinRange: 0,
+  sliderMaxRange: 1,
+  sliderStep: 0.1,
+  sliderStart: 0,
+  styleProperty: '',
+  stylePropertyValue: '',
+};
 
 const removeEffectClasses = (element) => {
   element.classList.remove(CHROME_EFFECT.className, SEPIA_EFFECT.className, MARVIN_EFFECT.className, PHOBOS_EFFECT.className, HEAT_EFFECT.className);
 };
 
-const addEffectClass = (element, className) => {
+const addEffectClass = (element, effectName) => {
   removeEffectClasses(element);
-  element.classList.add(className);
+  element.classList.add(effectName);
 };
 
 const onFilterSliderChange = (filterName, type) => {
@@ -113,32 +122,36 @@ const updateSliderOptions = (rangeMin, rangeMax, sliderStep, startValue) => {
 };
 
 const applyImageFilter = (image, filterObject) => {
-  addEffectClass(image, filterObject.className);
-  showSlider();
-  updateSliderOptions(filterObject.sliderMinRange, filterObject.sliderMaxRange, filterObject.sliderStep, filterObject.sliderStart);
-  onFilterSliderChange(filterObject.styleProperty, filterObject.stylePropertyValue);
+  if (filterObject === NONE_EFFECT) {
+    removeEffectClasses(image);
+    image.style.filter = filterObject.styleProperty;
+    hideSlider();
+  } else {
+    showSlider();
+    addEffectClass(image, `effects__preview--${filterObject.name}`);
+    updateSliderOptions(filterObject.sliderMinRange, filterObject.sliderMaxRange, filterObject.sliderStep, filterObject.sliderStart);
+    onFilterSliderChange(filterObject.styleProperty, filterObject.stylePropertyValue);
+  }
 };
 
 const filteringImage = (evt) => {
   switch (evt.target.value) {
-    case NONE_EFFECT:
-      removeEffectClasses(imagePreview);
-      imagePreview.style.filter = '';
-      hideSlider();
+    case NONE_EFFECT.name:
+      applyImageFilter(imagePreview, NONE_EFFECT);
       break;
-    case CHROME_EFFECT.value:
+    case CHROME_EFFECT.name:
       applyImageFilter(imagePreview, CHROME_EFFECT);
       break;
-    case SEPIA_EFFECT.value:
+    case SEPIA_EFFECT.name:
       applyImageFilter(imagePreview, SEPIA_EFFECT);
       break;
-    case MARVIN_EFFECT.value:
+    case MARVIN_EFFECT.name:
       applyImageFilter(imagePreview, MARVIN_EFFECT);
       break;
-    case PHOBOS_EFFECT.value:
+    case PHOBOS_EFFECT.name:
       applyImageFilter(imagePreview, PHOBOS_EFFECT);
       break;
-    case HEAT_EFFECT.value:
+    case HEAT_EFFECT.name:
       applyImageFilter(imagePreview, HEAT_EFFECT);
       break;
   }
