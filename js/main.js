@@ -1,8 +1,9 @@
-import './modules/generate-data.js';
-
 import './utils/get-random-positive-integer.js';
-import './utils/check-string-length.js';
-import './utils/keys-checks.js';
+import './modules/form-image-upload.js';
 
-import './modules/users-pictures.js';
-import './modules/form.js';
+import { renderPosts } from './modules/users-pictures.js';
+import { getData } from './modules/api.js';
+import { showAlert } from './utils/show-alert.js';
+
+getData(renderPosts, showAlert);
+

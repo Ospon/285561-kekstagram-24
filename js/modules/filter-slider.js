@@ -2,6 +2,7 @@ const imageEditor = document.querySelector('.img-upload__overlay');
 const sliderElement = imageEditor.querySelector('.effect-level__slider');
 const effectValue = imageEditor.querySelector('.effect-level__value');
 const imagePreview = imageEditor.querySelector('.img-upload__preview');
+
 const CHROME_EFFECT = {
   className: 'effects__preview--chrome',
   name: 'chrome',
