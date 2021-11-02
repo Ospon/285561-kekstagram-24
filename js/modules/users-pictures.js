@@ -1,23 +1,24 @@
-import {
-  items
-} from './generate-data.js';
-
 const picturesContainer = document.querySelector('.pictures');
 const picturesTemplate = document.querySelector('#picture').content;
 
 const pictureTitle = picturesContainer.querySelector('.pictures__title');
-pictureTitle.classList.remove('visually-hidden');
 
-const picturesListFragment = document.createDocumentFragment();
 
-items.forEach(({url, likes, comments}) => {
-  const pictureElement = picturesTemplate.cloneNode(true);
+const renderPosts = (postsData) => {
+  const picturesListFragment = document.createDocumentFragment();
+  pictureTitle.classList.remove('visually-hidden');
 
-  pictureElement.querySelector('.picture__img').src = url;
-  pictureElement.querySelector('.picture__likes').textContent = likes;
-  pictureElement.querySelector('.picture__comments').textContent = comments.length;
+  postsData.forEach(({ url, likes, comments }) => {
+    const pictureElement = picturesTemplate.cloneNode(true);
 
-  picturesListFragment.appendChild(pictureElement);
-});
+    pictureElement.querySelector('.picture__img').src = url;
+    pictureElement.querySelector('.picture__likes').textContent = likes;
+    pictureElement.querySelector('.picture__comments').textContent = comments.length;
 
-picturesContainer.appendChild(picturesListFragment);
+    picturesListFragment.appendChild(pictureElement);
+  });
+
+  picturesContainer.appendChild(picturesListFragment);
+};
+
+export { renderPosts };
