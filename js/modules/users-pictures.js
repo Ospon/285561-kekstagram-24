@@ -1,8 +1,10 @@
+import { removeExisitPictures } from './users-pictures-filters.js';
+
 const picturesContainer = document.querySelector('.pictures');
 const picturesTemplate = document.querySelector('#picture').content;
-
 const pictureTitle = picturesContainer.querySelector('.pictures__title');
-
+const pictureFilters = document.querySelector('.img-filters');
+const defaultFilterButton = document.querySelector('#filter-default');
 
 const renderPosts = (postsData) => {
   const picturesListFragment = document.createDocumentFragment();
@@ -18,7 +20,16 @@ const renderPosts = (postsData) => {
     picturesListFragment.appendChild(pictureElement);
   });
 
+  removeExisitPictures();
   picturesContainer.appendChild(picturesListFragment);
+  pictureFilters.classList.remove('img-filters--inactive');
 };
 
-export { renderPosts };
+const setDefaultFilterButtonClick = (cb) => {
+  defaultFilterButton.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    cb();
+  });
+};
+
+export { renderPosts, setDefaultFilterButtonClick };
