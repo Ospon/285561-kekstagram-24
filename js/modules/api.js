@@ -9,9 +9,8 @@ const getData = (onSuccess, onFail) => {
         pictureTitle.classList.remove('visually-hidden');
         pictureFilters.classList.remove('img-filters--inactive');
         return response.json();
-      } else {
-        return onFail('Данные с сервера не поступили. Попробуйте снова.');
       }
+      return onFail('Данные с сервера не поступили. Попробуйте снова.');
     })
     .then((posts) => {
       onSuccess(posts);
