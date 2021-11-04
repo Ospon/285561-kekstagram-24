@@ -1,7 +1,7 @@
 import './utils/get-random-positive-integer.js';
 import './modules/form-image-upload.js';
 import { debounce } from './utils/debounce.js';
-import './modules/live-image-preview.js';
+import './modules/uploaded-image-preview.js';
 
 import { renderPosts, setDefaultFilterButtonClick, renderMostDiscussedPosts, setDiscussedFilterButtonClick, renderRandomPosts, setRandomFilterButtonClick } from './modules/users-pictures.js';
 import { getData } from './modules/api.js';
