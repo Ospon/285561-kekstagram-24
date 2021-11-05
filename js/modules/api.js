@@ -1,12 +1,16 @@
 
+const pictureFilters = document.querySelector('.img-filters');
+const pictureTitle = document.querySelector('.pictures__title');
+
 const getData = (onSuccess, onFail) => {
   fetch('https://24.javascript.pages.academy/kekstagram/data')
     .then((response) => {
       if (response.ok) {
+        pictureTitle.classList.remove('visually-hidden');
+        pictureFilters.classList.remove('img-filters--inactive');
         return response.json();
-      } else {
-        return onFail('Данные с сервера не поступили. Попробуйте снова.');
       }
+      return onFail('Данные с сервера не поступили. Попробуйте снова.');
     })
     .then((posts) => {
       onSuccess(posts);
