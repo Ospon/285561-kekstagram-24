@@ -28,10 +28,11 @@ const changeSelectedFilterBackground = (activeElement, firstInactiveElement, sec
 const renderPosts = (postsData) => {
   const picturesListFragment = document.createDocumentFragment();
 
-  postsData.forEach(({ url, likes, comments }) => {
+  postsData.forEach(({ id, url, likes, comments }) => {
     const pictureElement = picturesTemplate.cloneNode(true);
 
     pictureElement.querySelector('.picture__img').src = url;
+    pictureElement.querySelector('.picture__img').alt = id;
     pictureElement.querySelector('.picture__likes').textContent = likes;
     pictureElement.querySelector('.picture__comments').textContent = comments.length;
 

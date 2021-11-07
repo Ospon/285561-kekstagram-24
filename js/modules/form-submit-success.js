@@ -38,5 +38,4 @@ function closeMessagePopUp() {
   successMessage.remove();
 }
 
-
 export { formSubmitSuccess, closeMessagePopUp };
