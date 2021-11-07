@@ -104,6 +104,7 @@ function closeImageEditor() {
   imageEditor.classList.add('hidden');
   toggleWindowBlocker();
   setDefaultFormState();
+  removeSlider();
 
   uploadImageButton.addEventListener('change', openImageEditor);
 
@@ -115,7 +116,6 @@ function closeImageEditor() {
   closeButton.removeEventListener('click', closeImageEditor);
   scaleBiggerButton.removeEventListener('click', increaseImageScale);
   scaleSmallerButton.removeEventListener('click', decreaseImageScale);
-  removeSlider();
   effectsContainer.removeEventListener('change', filteringImage);
 }
 

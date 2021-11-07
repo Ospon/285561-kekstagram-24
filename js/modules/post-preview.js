@@ -58,6 +58,7 @@ const fillPostData = (posts, evt) => {
 
 const openPostPreview = (evt) => {
   if (evt.target.tagName === IMAGE_TAG) {
+    evt.preventDefault();
     toggleWindowBlocker();
 
     getData((postsData) => fillPostData(postsData, evt), showAlert);
@@ -80,3 +81,5 @@ function closePostPreview() {
 }
 
 picturesContaner.addEventListener('click', openPostPreview);
+
+
