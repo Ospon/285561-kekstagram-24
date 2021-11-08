@@ -65,6 +65,13 @@ const showMoreComments = (evt) => {
   updateCommentsList(SHOWED_COMMENTS);
 };
 
+const initializePostComments = () => {
+  COMMENT_COLLECTION = [];
+  SHOWED_COMMENTS = DEFAULT_COMMENTS_VALUE;
+  COMMENT_COLLECTION = commentsContainer.querySelectorAll('.social__comment');
+  updateCommentsList(SHOWED_COMMENTS);
+};
+
 const fillPostData = (posts, evt) => {
   const index = posts.findIndex((post) => post.url === getImageUrl(evt));
 
@@ -78,11 +85,7 @@ const fillPostData = (posts, evt) => {
 
   clearExistPostComments();
   renderComments(arrayOfComments);
-
-  COMMENT_COLLECTION = [];
-  SHOWED_COMMENTS = DEFAULT_COMMENTS_VALUE;
-  COMMENT_COLLECTION = commentsContainer.querySelectorAll('.social__comment');
-  updateCommentsList(SHOWED_COMMENTS);
+  initializePostComments();
 };
 
 const openPostPreview = (evt) => {
