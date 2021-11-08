@@ -197,6 +197,7 @@ main {
 .picture {
   position: relative;
   line-height: 0;
+  cursor: pointer;
 }
 
 .picture__img {

@@ -151,7 +151,7 @@
           </div>
 
           <!-- Комментарии к изображению -->
-          <div class="social__comment-count">5 из <span class="comments-count">125</span> комментариев</div>
+          <div class="social__comment-count"><span class="showed-comments-count">5</span> из <span class="comments-count">125</span> комментариев</div>
           <ul class="social__comments">
             <li class="social__comment">
               <img class="social__picture" src="img/avatar-4.svg" alt="Аватар комментатора фотографии" width="35" height="35">
@@ -197,13 +197,13 @@
 
   <!-- Шаблон изображения случайного пользователя -->
   <template id="picture">
-    <a href="#" class="picture">
+    <div class="picture">
       <img class="picture__img" src="" width="182" height="182" alt="Случайная фотография">
       <p class="picture__info">
         <span class="picture__comments"></span>
         <span class="picture__likes"></span>
       </p>
-    </a>
+    </div>
   </template>
 
   <!-- Сообщение с ошибкой загрузки изображения -->
