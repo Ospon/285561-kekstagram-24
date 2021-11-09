@@ -19,10 +19,13 @@ const removeExisitPictures = () => {
   pictures.forEach((element) => element.remove());
 };
 
-const changeSelectedFilterBackground = (activeElement, firstInactiveElement, secondInactiveElement) => {
+const setActiveFilterButton = (activeElement) => {
+  activeElement.classList.add(activeFilterButtonBackground);
+};
+
+const setInactiveFilterButton = (firstInactiveElement, secondInactiveElement) => {
   firstInactiveElement.classList.remove(activeFilterButtonBackground);
   secondInactiveElement.classList.remove(activeFilterButtonBackground);
-  activeElement.classList.add(activeFilterButtonBackground);
 };
 
 const fillPostData = ({ id, url, likes, comments }, fragment) => {
@@ -51,7 +54,8 @@ const setDefaultFilterButtonClick = (cb) => {
   defaultFilterButton.addEventListener('click', (evt) => {
     evt.preventDefault();
     cb();
-    changeSelectedFilterBackground(defaultFilterButton, discussedFilterButton, randomFilterButton);
+    setActiveFilterButton(defaultFilterButton);
+    setInactiveFilterButton(discussedFilterButton, randomFilterButton);
   });
 };
 
@@ -73,7 +77,8 @@ const setDiscussedFilterButtonClick = (cb) => {
   discussedFilterButton.addEventListener('click', (evt) => {
     evt.preventDefault();
     cb();
-    changeSelectedFilterBackground(discussedFilterButton, defaultFilterButton, randomFilterButton);
+    setActiveFilterButton(discussedFilterButton);
+    setInactiveFilterButton(defaultFilterButton, randomFilterButton);
   });
 };
 
@@ -97,9 +102,9 @@ const setRandomFilterButtonClick = (cb) => {
   randomFilterButton.addEventListener('click', (evt) => {
     evt.preventDefault();
     cb();
-    changeSelectedFilterBackground(randomFilterButton, discussedFilterButton, defaultFilterButton);
+    setActiveFilterButton(randomFilterButton);
+    setInactiveFilterButton(discussedFilterButton, defaultFilterButton);
   });
 };
 
 export { renderPosts, setDefaultFilterButtonClick, renderMostDiscussedPosts, setDiscussedFilterButtonClick, renderRandomPosts, setRandomFilterButtonClick  };
-
