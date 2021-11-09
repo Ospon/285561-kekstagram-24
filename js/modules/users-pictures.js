@@ -25,18 +25,22 @@ const changeSelectedFilterBackground = (activeElement, firstInactiveElement, sec
   activeElement.classList.add(activeFilterButtonBackground);
 };
 
+const fillPostData = ({ id, url, likes, comments }, fragment) => {
+  const pictureElement = picturesTemplate.cloneNode(true);
+
+  pictureElement.querySelector('.picture__img').src = url;
+  pictureElement.querySelector('.picture__img').alt = id;
+  pictureElement.querySelector('.picture__likes').textContent = likes;
+  pictureElement.querySelector('.picture__comments').textContent = comments.length;
+
+  fragment.appendChild(pictureElement);
+};
+
 const renderPosts = (postsData) => {
   const picturesListFragment = document.createDocumentFragment();
 
   postsData.forEach(({ id, url, likes, comments }) => {
-    const pictureElement = picturesTemplate.cloneNode(true);
-
-    pictureElement.querySelector('.picture__img').src = url;
-    pictureElement.querySelector('.picture__img').alt = id;
-    pictureElement.querySelector('.picture__likes').textContent = likes;
-    pictureElement.querySelector('.picture__comments').textContent = comments.length;
-
-    picturesListFragment.appendChild(pictureElement);
+    fillPostData({ id, url, likes, comments }, picturesListFragment);
   });
 
   removeExisitPictures();
@@ -57,14 +61,8 @@ const renderMostDiscussedPosts = (postsData) => {
   postsData
     .slice()
     .sort(compareComments)
-    .forEach(({ url, likes, comments }) => {
-      const pictureElement = picturesTemplate.cloneNode(true);
-
-      pictureElement.querySelector('.picture__img').src = url;
-      pictureElement.querySelector('.picture__likes').textContent = likes;
-      pictureElement.querySelector('.picture__comments').textContent = comments.length;
-
-      picturesListFragment.appendChild(pictureElement);
+    .forEach(({ id, url, likes, comments }) => {
+      fillPostData({ id, url, likes, comments }, picturesListFragment);
     });
 
   removeExisitPictures();
@@ -87,14 +85,8 @@ const renderRandomPosts = (postsData) => {
     .slice()
     .sort(() => Math.random() - 0.5)
     .slice(0, randomPicturesCount)
-    .forEach(({ url, likes, comments }) => {
-      const pictureElement = picturesTemplate.cloneNode(true);
-
-      pictureElement.querySelector('.picture__img').src = url;
-      pictureElement.querySelector('.picture__likes').textContent = likes;
-      pictureElement.querySelector('.picture__comments').textContent = comments.length;
-
-      picturesListFragment.appendChild(pictureElement);
+    .forEach(({ id, url, likes, comments }) => {
+      fillPostData({ id, url, likes, comments }, picturesListFragment);
     });
 
   removeExisitPictures();

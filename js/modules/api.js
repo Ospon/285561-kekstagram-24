@@ -1,6 +1,7 @@
 
 const pictureFilters = document.querySelector('.img-filters');
 const pictureTitle = document.querySelector('.pictures__title');
+const fetchFailMessage = 'Данные с сервера не поступили. Попробуйте снова.';
 
 const getData = (onSuccess, onFail) => {
   fetch('https://24.javascript.pages.academy/kekstagram/data')
@@ -10,13 +11,13 @@ const getData = (onSuccess, onFail) => {
         pictureFilters.classList.remove('img-filters--inactive');
         return response.json();
       }
-      return onFail('Данные с сервера не поступили. Попробуйте снова.');
+      return onFail(fetchFailMessage);
     })
     .then((posts) => {
       onSuccess(posts);
     })
     .catch(() => {
-      onFail('Данные с сервера не поступили. Попробуйте снова.');
+      onFail(fetchFailMessage);
     });
 };
 

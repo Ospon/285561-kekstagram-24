@@ -1,4 +1,4 @@
-import './utils/get-random-positive-integer.js';
+//import './utils/get-random-positive-integer.js';
 import './modules/form-image-upload.js';
 import { debounce } from './utils/debounce.js';
 import './modules/live-image-preview.js';
