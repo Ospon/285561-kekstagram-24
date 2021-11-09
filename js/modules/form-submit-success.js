@@ -29,6 +29,8 @@ function formSubmitSuccess() {
 function closeMessagePopUp() {
   toggleWindowBlocker();
 
+  document.removeEventListener('keydown', onPopupEscKeydown);
+
   const succesMessageCloseButton = document.querySelector('.success__button');
   succesMessageCloseButton.removeEventListener('click', closeMessagePopUp);
 
