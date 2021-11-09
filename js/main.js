@@ -1,6 +1,6 @@
 import './modules/form-image-upload.js';
+import './modules/uploaded-image-preview.js';
 import { debounce } from './utils/debounce.js';
-import './modules/live-image-preview.js';
 import { openPostPreview, setOpenPostPreviewClick} from './modules/post-preview.js';
 
 import { renderPosts, setDefaultFilterButtonClick, renderMostDiscussedPosts, setDiscussedFilterButtonClick, renderRandomPosts, setRandomFilterButtonClick } from './modules/users-pictures.js';
