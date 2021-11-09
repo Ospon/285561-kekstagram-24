@@ -29,6 +29,8 @@ function formSubmitError() {
 function closeMessagePopUp() {
   toggleWindowBlocker();
 
+  document.removeEventListener('keydown', onPopupEscKeydown);
+
   const errorMessageCloseButton = document.querySelector('.error__button');
   errorMessageCloseButton.removeEventListener('click', closeMessagePopUp);
 
