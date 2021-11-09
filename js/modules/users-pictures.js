@@ -6,16 +6,16 @@ const discussedFilterButton = pictureFilters.querySelector('#filter-discussed');
 const randomFilterButton = pictureFilters.querySelector('#filter-random');
 const activeFilterButtonBackground = 'img-filters__button--active';
 
-const getCommentCountValue = (comment) => comment.comments.length;
+const getCommentsLengthValue = (comment) => comment.comments.length;
 
 const compareComments = (commentA, commentB) => {
-  const commentsA = getCommentCountValue(commentA);
-  const commentsB = getCommentCountValue(commentB);
+  const commentsA = getCommentsLengthValue(commentA);
+  const commentsB = getCommentsLengthValue(commentB);
   return commentsB - commentsA;
 };
 
 const removeExisitPictures = () => {
-  const pictures = document.querySelectorAll('.picture');
+  const pictures = picturesContainer.querySelectorAll('.picture');
   pictures.forEach((element) => element.remove());
 };
 
