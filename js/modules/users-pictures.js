@@ -6,37 +6,44 @@ const discussedFilterButton = pictureFilters.querySelector('#filter-discussed');
 const randomFilterButton = pictureFilters.querySelector('#filter-random');
 const activeFilterButtonBackground = 'img-filters__button--active';
 
-const getCommentCountValue = (comment) => comment.comments.length;
+const getCommentsLengthValue = (comment) => comment.comments.length;
 
 const compareComments = (commentA, commentB) => {
-  const commentsA = getCommentCountValue(commentA);
-  const commentsB = getCommentCountValue(commentB);
+  const commentsA = getCommentsLengthValue(commentA);
+  const commentsB = getCommentsLengthValue(commentB);
   return commentsB - commentsA;
 };
 
 const removeExisitPictures = () => {
-  const pictures = document.querySelectorAll('.picture');
+  const pictures = picturesContainer.querySelectorAll('.picture');
   pictures.forEach((element) => element.remove());
 };
 
-const changeSelectedFilterBackground = (activeElement, firstInactiveElement, secondInactiveElement) => {
+const setActiveFilterButton = (activeElement) => {
+  activeElement.classList.add(activeFilterButtonBackground);
+};
+
+const setInactiveFilterButton = (firstInactiveElement, secondInactiveElement) => {
   firstInactiveElement.classList.remove(activeFilterButtonBackground);
   secondInactiveElement.classList.remove(activeFilterButtonBackground);
-  activeElement.classList.add(activeFilterButtonBackground);
+};
+
+const fillPostData = ({ id, url, likes, comments }, fragment) => {
+  const pictureElement = picturesTemplate.cloneNode(true);
+
+  pictureElement.querySelector('.picture__img').src = url;
+  pictureElement.querySelector('.picture__img').alt = id;
+  pictureElement.querySelector('.picture__likes').textContent = likes;
+  pictureElement.querySelector('.picture__comments').textContent = comments.length;
+
+  fragment.appendChild(pictureElement);
 };
 
 const renderPosts = (postsData) => {
   const picturesListFragment = document.createDocumentFragment();
 
   postsData.forEach(({ id, url, likes, comments }) => {
-    const pictureElement = picturesTemplate.cloneNode(true);
-
-    pictureElement.querySelector('.picture__img').src = url;
-    pictureElement.querySelector('.picture__img').alt = id;
-    pictureElement.querySelector('.picture__likes').textContent = likes;
-    pictureElement.querySelector('.picture__comments').textContent = comments.length;
-
-    picturesListFragment.appendChild(pictureElement);
+    fillPostData({ id, url, likes, comments }, picturesListFragment);
   });
 
   removeExisitPictures();
@@ -47,7 +54,8 @@ const setDefaultFilterButtonClick = (cb) => {
   defaultFilterButton.addEventListener('click', (evt) => {
     evt.preventDefault();
     cb();
-    changeSelectedFilterBackground(defaultFilterButton, discussedFilterButton, randomFilterButton);
+    setActiveFilterButton(defaultFilterButton);
+    setInactiveFilterButton(discussedFilterButton, randomFilterButton);
   });
 };
 
@@ -57,14 +65,8 @@ const renderMostDiscussedPosts = (postsData) => {
   postsData
     .slice()
     .sort(compareComments)
-    .forEach(({ url, likes, comments }) => {
-      const pictureElement = picturesTemplate.cloneNode(true);
-
-      pictureElement.querySelector('.picture__img').src = url;
-      pictureElement.querySelector('.picture__likes').textContent = likes;
-      pictureElement.querySelector('.picture__comments').textContent = comments.length;
-
-      picturesListFragment.appendChild(pictureElement);
+    .forEach(({ id, url, likes, comments }) => {
+      fillPostData({ id, url, likes, comments }, picturesListFragment);
     });
 
   removeExisitPictures();
@@ -75,7 +77,8 @@ const setDiscussedFilterButtonClick = (cb) => {
   discussedFilterButton.addEventListener('click', (evt) => {
     evt.preventDefault();
     cb();
-    changeSelectedFilterBackground(discussedFilterButton, defaultFilterButton, randomFilterButton);
+    setActiveFilterButton(discussedFilterButton);
+    setInactiveFilterButton(defaultFilterButton, randomFilterButton);
   });
 };
 
@@ -87,14 +90,8 @@ const renderRandomPosts = (postsData) => {
     .slice()
     .sort(() => Math.random() - 0.5)
     .slice(0, randomPicturesCount)
-    .forEach(({ url, likes, comments }) => {
-      const pictureElement = picturesTemplate.cloneNode(true);
-
-      pictureElement.querySelector('.picture__img').src = url;
-      pictureElement.querySelector('.picture__likes').textContent = likes;
-      pictureElement.querySelector('.picture__comments').textContent = comments.length;
-
-      picturesListFragment.appendChild(pictureElement);
+    .forEach(({ id, url, likes, comments }) => {
+      fillPostData({ id, url, likes, comments }, picturesListFragment);
     });
 
   removeExisitPictures();
@@ -105,9 +102,9 @@ const setRandomFilterButtonClick = (cb) => {
   randomFilterButton.addEventListener('click', (evt) => {
     evt.preventDefault();
     cb();
-    changeSelectedFilterBackground(randomFilterButton, discussedFilterButton, defaultFilterButton);
+    setActiveFilterButton(randomFilterButton);
+    setInactiveFilterButton(discussedFilterButton, defaultFilterButton);
   });
 };
 
 export { renderPosts, setDefaultFilterButtonClick, renderMostDiscussedPosts, setDiscussedFilterButtonClick, renderRandomPosts, setRandomFilterButtonClick  };
-

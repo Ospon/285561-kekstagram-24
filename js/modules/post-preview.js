@@ -1,9 +1,8 @@
-import { getData } from './api.js';
-import { showAlert } from '../utils/show-alert.js';
 import { isEscapeKey } from '../utils/keys-checks.js';
 import { toggleWindowBlocker } from '../utils/window-blocker.js';
 
 const IMAGE_TAG = 'IMG';
+const DEFAULT_COMMENTS_VALUE = 5;
 const picturesContaner = document.querySelector('.pictures');
 const bigPicture = document.querySelector('.big-picture');
 const closeButton = bigPicture.querySelector('.big-picture__cancel');
@@ -16,9 +15,8 @@ const commentsContainer = bigPicture.querySelector('.social__comments');
 const commentTemplate = commentsContainer.querySelector('.social__comment');
 const loadMoreCommentsButton = bigPicture.querySelector('.social__comments-loader');
 const showedCommentsCount = bigPicture.querySelector('.showed-comments-count');
-const DEFAULT_COMMENTS_VALUE = 5;
-let SHOWED_COMMENTS = DEFAULT_COMMENTS_VALUE;
-let COMMENT_COLLECTION = [];
+let showedComments = DEFAULT_COMMENTS_VALUE;
+let commentsCollection = [];
 
 const onPopupEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
@@ -27,23 +25,30 @@ const onPopupEscKeydown = (evt) => {
   }
 };
 
-const getImageUrl = (evt) => evt.target.src.split('/').slice(-2).join('/');
-
 const clearExistPostComments = () => {
   commentsContainer.innerHTML = '';
 };
 
 const updateCommentsList = (commentsCount) => {
   clearExistPostComments();
-  const commentsArray = [...COMMENT_COLLECTION];
+  const commentsArray = [...commentsCollection];
   commentsArray.slice(0, commentsCount).forEach((item) => commentsContainer.appendChild(item));
   showedCommentsCount.textContent = commentsContainer.children.length;
 
-  if (showedCommentsCount.textContent === commentCount.textContent) {
-    loadMoreCommentsButton.classList.add('hidden');
-  } else {
-    loadMoreCommentsButton.classList.remove('hidden');
-  }
+  showedCommentsCount.textContent === commentCount.textContent ? loadMoreCommentsButton.classList.add('hidden') : loadMoreCommentsButton.classList.remove('hidden');
+};
+
+const showMoreComments = (evt) => {
+  evt.preventDefault();
+  showedComments = showedComments + 5;
+  updateCommentsList(showedComments);
+};
+
+const initializePostComments = () => {
+  commentsCollection = [];
+  showedComments = DEFAULT_COMMENTS_VALUE;
+  commentsCollection = commentsContainer.querySelectorAll('.social__comment');
+  updateCommentsList(showedComments);
 };
 
 const renderComments = (postsComments) => {
@@ -59,21 +64,8 @@ const renderComments = (postsComments) => {
   commentsContainer.appendChild(commentsListFragment);
 };
 
-const showMoreComments = (evt) => {
-  evt.preventDefault();
-  SHOWED_COMMENTS = SHOWED_COMMENTS + 5;
-  updateCommentsList(SHOWED_COMMENTS);
-};
-
-const initializePostComments = () => {
-  COMMENT_COLLECTION = [];
-  SHOWED_COMMENTS = DEFAULT_COMMENTS_VALUE;
-  COMMENT_COLLECTION = commentsContainer.querySelectorAll('.social__comment');
-  updateCommentsList(SHOWED_COMMENTS);
-};
-
 const fillPostData = (posts, evt) => {
-  const index = posts.findIndex((post) => post.url === getImageUrl(evt));
+  const index = posts.findIndex((post) => post.url === evt.target.src.split('/').slice(-2).join('/'));
 
   bigPictureImage.src = posts[index].url;
   bigPictureImage.alt = posts[index].description;
@@ -88,12 +80,10 @@ const fillPostData = (posts, evt) => {
   initializePostComments();
 };
 
-const openPostPreview = (evt) => {
-  if (evt.target.tagName === IMAGE_TAG) {
-    evt.preventDefault();
+const openPostPreview = (postData, evt) => {
+  if (evt.target.nodeName === IMAGE_TAG) {
     toggleWindowBlocker();
-
-    getData((postsData) => fillPostData(postsData, evt), showAlert);
+    fillPostData(postData, evt);
 
     bigPicture.classList.remove('hidden');
     closeButton.addEventListener('click', closePostPreview);
@@ -111,6 +101,12 @@ function closePostPreview() {
   loadMoreCommentsButton.removeEventListener('click', showMoreComments);
 }
 
-picturesContaner.addEventListener('click', openPostPreview);
+const setOpenPostPreviewClick = (cb) => {
+  picturesContaner.addEventListener('click', (evt) => {
+    cb(evt);
+  });
+};
+
+export { openPostPreview, setOpenPostPreviewClick };
 
 
