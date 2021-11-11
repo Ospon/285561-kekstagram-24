@@ -2,67 +2,34 @@ const imageEditor = document.querySelector('.img-upload__overlay');
 const sliderElement = imageEditor.querySelector('.effect-level__slider');
 const effectValue = imageEditor.querySelector('.effect-level__value');
 const imagePreview = imageEditor.querySelector('.img-upload__preview');
+const sliderOptions = {
+  range: {
+    min: 0,
+    max: 100,
+  },
+  start: 50,
+  step: 1,
+  connect: 'lower',
+};
 
-const CHROME_EFFECT = {
-  className: 'effects__preview--chrome',
-  name: 'chrome',
-  sliderMinRange: 0,
-  sliderMaxRange: 1,
-  sliderStep: 0.1,
-  sliderStart: 1,
-  styleProperty: 'grayscale',
-  stylePropertyValue: '',
-};
-const SEPIA_EFFECT = {
-  className: 'effects__preview--sepia',
-  name: 'sepia',
-  sliderMinRange: 0,
-  sliderMaxRange: 1,
-  sliderStep: 0.1,
-  sliderStart: 1,
-  styleProperty: 'sepia',
-  stylePropertyValue: '',
-};
-const MARVIN_EFFECT = {
-  className: 'effects__preview--marvin',
-  name: 'marvin',
-  sliderMinRange: 0,
-  sliderMaxRange: 100,
-  sliderStep: 1,
-  sliderStart: 100,
-  styleProperty: 'invert',
-  stylePropertyValue: '%',
-};
-const PHOBOS_EFFECT = {
-  className: 'effects__preview--phobos',
-  name: 'phobos',
-  sliderMinRange: 0,
-  sliderMaxRange: 3,
-  sliderStep: 0.1,
-  sliderStart: 3,
-  styleProperty: 'blur',
-  stylePropertyValue: 'px',
-};
-const HEAT_EFFECT = {
-  className: 'effects__preview--heat',
-  name: 'heat',
-  sliderMinRange: 1,
-  sliderMaxRange: 3,
-  sliderStep: 0.1,
-  sliderStart: 3,
-  styleProperty: 'brightness',
-  stylePropertyValue: '',
-};
-const NONE_EFFECT = {
-  className: '',
-  name: 'none',
-  sliderMinRange: 0,
-  sliderMaxRange: 1,
-  sliderStep: 0.1,
-  sliderStart: 0,
-  styleProperty: '',
-  stylePropertyValue: '',
-};
+function FilterEffect(className, name, sliderMinRange, sliderMaxRange, sliderStep, sliderStart, styleProperty, stylePropertyValue, isSliderActive) {
+  this.className = className;
+  this.name = name;
+  this.sliderMinRange = sliderMinRange;
+  this.sliderMaxRange = sliderMaxRange;
+  this.sliderStep = sliderStep;
+  this.sliderStart = sliderStart;
+  this.styleProperty = styleProperty;
+  this.stylePropertyValue = stylePropertyValue;
+  this.isSliderActive = isSliderActive;
+}
+
+const CHROME_EFFECT = new FilterEffect('effects__preview--chrome', 'chrome', 0, 1, 0.1, 1, 'grayscale', '', true);
+const SEPIA_EFFECT =  new FilterEffect('effects__preview--sepia', 'sepia', 0, 1, 0.1, 1, 'sepia', '', true);
+const MARVIN_EFFECT = new FilterEffect('effects__preview--marvin', 'marvin', 0, 100, 1, 100, 'invert', '%', true);
+const PHOBOS_EFFECT = new FilterEffect('effects__preview--phobos', 'phobos', 0, 3, 0.1, 3, 'blur', 'px', true);
+const HEAT_EFFECT = new FilterEffect('effects__preview--heat', 'heat', 1, 3, 0.1, 3, 'brightness', '', true);
+const NONE_EFFECT = new FilterEffect('', '', 0, 1, 0.1, 0, '', '', false);
 
 const removeEffectClasses = (element) => {
   element.classList.remove(CHROME_EFFECT.className, SEPIA_EFFECT.className, MARVIN_EFFECT.className, PHOBOS_EFFECT.className, HEAT_EFFECT.className);
@@ -94,16 +61,8 @@ const resetSliderValues = () => {
   imagePreview.style.removeProperty('filter');
 };
 
-const inicializeSlider = () => {
-  noUiSlider.create(sliderElement, {
-    range: {
-      min: 0,
-      max: 100,
-    },
-    start: 50,
-    step: 1,
-    connect: 'lower',
-  });
+const initializeSlider = () => {
+  noUiSlider.create(sliderElement, sliderOptions);
   resetSliderValues();
 };
 
@@ -158,4 +117,4 @@ const filteringImage = (evt) => {
   }
 };
 
-export { filteringImage, inicializeSlider, removeSlider };
+export { filteringImage, initializeSlider, removeSlider };

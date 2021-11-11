@@ -1,7 +1,7 @@
 import { isEscapeKey } from '../utils/keys-checks.js';
 import { toggleWindowBlocker } from '../utils/window-blocker.js';
 import { scaleBiggerButton, scaleSmallerButton, increaseImageScale, decreaseImageScale, setDefaultImageScale } from './image-scaler.js';
-import { filteringImage, inicializeSlider, removeSlider } from './filter-slider.js';
+import { filteringImage, initializeSlider, removeSlider } from './filter-slider.js';
 import { sendData } from './api.js';
 import { formSubmitError } from './form-submit-error.js';
 import { formSubmitSuccess } from './form-submit-success.js';
@@ -87,7 +87,7 @@ function openImageEditor() {
   scaleBiggerButton.addEventListener('click', increaseImageScale);
   scaleSmallerButton.addEventListener('click', decreaseImageScale);
   uploadImageButton.removeEventListener('change', openImageEditor);
-  inicializeSlider();
+  initializeSlider();
   effectsContainer.addEventListener('change', filteringImage);
 }
 
