@@ -1,29 +1,30 @@
+const FETCH_FAIL_MESSAGE = 'Данные с сервера не поступили. Попробуйте снова.';
+const SERVER_URL = 'https://24.javascript.pages.academy/kekstagram';
 
 const pictureFilters = document.querySelector('.img-filters');
 const pictureTitle = document.querySelector('.pictures__title');
-const fetchFailMessage = 'Данные с сервера не поступили. Попробуйте снова.';
 
 const getData = (onSuccess, onFail) => {
-  fetch('https://24.javascript.pages.academy/kekstagram/data')
+  fetch(`${SERVER_URL}/data`)
     .then((response) => {
       if (response.ok) {
         pictureTitle.classList.remove('visually-hidden');
         pictureFilters.classList.remove('img-filters--inactive');
         return response.json();
       }
-      return onFail(fetchFailMessage);
+      return onFail(FETCH_FAIL_MESSAGE);
     })
     .then((posts) => {
       onSuccess(posts);
     })
     .catch(() => {
-      onFail(fetchFailMessage);
+      onFail(FETCH_FAIL_MESSAGE);
     });
 };
 
 const sendData = (onSuccess, onFail, body) => {
   fetch(
-    'https://24.javascript.pages.academy/kekstagram',
+    SERVER_URL,
     {
       method: 'POST',
       body,
