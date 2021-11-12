@@ -1,7 +1,7 @@
 import { isEscapeKey } from '../utils/keys-checks.js';
 import { toggleWindowBlocker } from '../utils/window-blocker.js';
 
-const IMAGE_TAG = 'IMG';
+const SMALL_PICTURE_IMG = 'picture__img';
 const DEFAULT_COMMENTS_VALUE = 5;
 const picturesContaner = document.querySelector('.pictures');
 const bigPicture = document.querySelector('.big-picture');
@@ -81,7 +81,7 @@ const fillPostData = (posts, evt) => {
 };
 
 const openPostPreview = (postData, evt) => {
-  if (evt.target.nodeName === IMAGE_TAG) {
+  if (evt.target.getAttribute('class') === SMALL_PICTURE_IMG) {
     toggleWindowBlocker();
     fillPostData(postData, evt);
 
