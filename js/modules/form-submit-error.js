@@ -2,7 +2,7 @@ import { closeImageEditor } from './form-image-upload.js';
 import { isEscapeKey } from '../utils/keys-checks.js';
 import { toggleWindowBlocker } from '../utils/window-blocker.js';
 
-const errorMessageTemplete = document.querySelector('#error').content;
+const errorMessageTemplate = document.querySelector('#error').content;
 
 const onPopupEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
@@ -14,7 +14,7 @@ const onPopupEscKeydown = (evt) => {
 function formSubmitError() {
   closeImageEditor();
   toggleWindowBlocker();
-  const element = errorMessageTemplete.cloneNode(true);
+  const element = errorMessageTemplate.cloneNode(true);
   document.body.appendChild(element);
 
   document.addEventListener('keydown', onPopupEscKeydown);

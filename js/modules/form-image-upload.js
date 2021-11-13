@@ -31,7 +31,7 @@ const onPopupEscKeydown = (evt) => {
   }
 };
 
-const stopEscKeydownPropogation = (evt) => {
+const stopEscKeydownPropagation = (evt) => {
   if (isEscapeKey(evt)) {
     evt.stopPropagation();
   }
@@ -39,14 +39,20 @@ const stopEscKeydownPropogation = (evt) => {
 
 const isValidHashtag = (element) => regHashtagExp.test(element);
 
-const hasDuplicatedItem = (array) => array.map((item) => item.toLowerCase()).some((item, index) => array.indexOf(item) < index);
+/* const hasDuplicatedItem = (array) => array.map((item) => item.toLowerCase()).some((item, index) => array.indexOf(item) < index); */
+const hasDuplicatedItem = (array) => {
+  const lowerCasedArray = array.map((item) => item.toLowerCase());
+  return new Set(lowerCasedArray).size !== lowerCasedArray.length;
+};
 
 const getHashtagValidityMessage= (element, array) => {
   if (!isValidHashtag(element)) {
     return GENERAL_HASHTAGS_REQUIREMENTS;
-  }  if (hasDuplicatedItem(array)) {
+  }
+  if (hasDuplicatedItem(array)) {
     return DUPLICATED_HASHTAG_MESSAGE;
-  } if (array.length > MAX_HASHTAGS_ALLOWED) {
+  }
+  if (array.length > MAX_HASHTAGS_ALLOWED) {
     return MAX_HASHTAGS_ALLOWED_MESSAGE;
   }
   return '';
@@ -59,7 +65,7 @@ const hashtagsInputValidate = () => {
     hashtagInput.setCustomValidity(getHashtagValidityMessage(element, hashtagsArray));
     hashtagInput.reportValidity();
     const validityState = hashtagInput.checkValidity();
-    (!validityState) ? hashtagInput.style.border = WARNING_BORDER_STYLE : hashtagInput.style.border = DEFAULT_BORDER_STYLE;
+    hashtagInput.style.border = validityState ?  hashtagInput.style.border = DEFAULT_BORDER_STYLE : hashtagInput.style.border = WARNING_BORDER_STYLE;
   });
 };
 
@@ -78,10 +84,10 @@ function openImageEditor() {
   toggleWindowBlocker();
 
   document.addEventListener('keydown', onPopupEscKeydown);
-  hashtagInput.addEventListener('keydown', stopEscKeydownPropogation);
+  hashtagInput.addEventListener('keydown', stopEscKeydownPropagation);
   hashtagInput.addEventListener('input', hashtagsInputValidate);
   imageDescriptionInput.addEventListener('input', imageDescriptionInputValidate);
-  imageDescriptionInput.addEventListener('keydown', stopEscKeydownPropogation);
+  imageDescriptionInput.addEventListener('keydown', stopEscKeydownPropagation);
   closeButton.addEventListener('click', closeImageEditor);
   setDefaultImageScale();
   scaleBiggerButton.addEventListener('click', increaseImageScale);
@@ -109,10 +115,10 @@ function closeImageEditor() {
   uploadImageButton.addEventListener('change', openImageEditor);
 
   document.removeEventListener('keydown', onPopupEscKeydown);
-  hashtagInput.removeEventListener('keydown', stopEscKeydownPropogation);
+  hashtagInput.removeEventListener('keydown', stopEscKeydownPropagation);
   hashtagInput.removeEventListener('input', hashtagsInputValidate);
   imageDescriptionInput.removeEventListener('input', imageDescriptionInputValidate);
-  imageDescriptionInput.removeEventListener('keydown', stopEscKeydownPropogation);
+  imageDescriptionInput.removeEventListener('keydown', stopEscKeydownPropagation);
   closeButton.removeEventListener('click', closeImageEditor);
   scaleBiggerButton.removeEventListener('click', increaseImageScale);
   scaleSmallerButton.removeEventListener('click', decreaseImageScale);

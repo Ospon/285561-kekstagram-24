@@ -14,9 +14,9 @@ let currentScaleValue =  parseInt(scaleValue.value, 10) / 100;
 
 const setDefaultImageScale = () => {
   scaleValue.value = DEFAULT_SCALE_VALUE;
-  const defaultCOntainer = parseInt(scaleValue.value, 10) / 100;
-  bigImagePreview.style.transform = `scale(${defaultCOntainer})`;
-  currentScaleValue = defaultCOntainer;
+  const defaultContainer = parseInt(scaleValue.value, 10) / 100;
+  bigImagePreview.style.transform = `scale(${defaultContainer})`;
+  currentScaleValue = defaultContainer;
 };
 
 const increaseImageScale = () => {
