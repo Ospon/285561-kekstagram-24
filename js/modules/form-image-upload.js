@@ -105,7 +105,7 @@ const setDefaultFormState = () => {
   uploadImageButton.value = '';
   hashtagInput.value = '';
   imageDescriptionInput.value = '';
-  noneEffect.checked;
+  noneEffect.checked = true;
   hashtagInput.style.border = DEFAULT_BORDER_STYLE;
   imageDescriptionInput.style.border = DEFAULT_BORDER_STYLE;
 };
