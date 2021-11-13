@@ -47,6 +47,9 @@ const hasDuplicatedItem = (array) => {
 };
 
 const getHashtagValidityMessage = (element, array) => {
+  if (array[0] === '' && array.length === 1) {
+    return '';
+  }
   if (!isValidHashtag(element)) {
     return GENERAL_HASHTAGS_REQUIREMENTS;
   }

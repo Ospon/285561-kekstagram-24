@@ -22,8 +22,8 @@ const formSubmitError = () => {
   const errorMessageCloseButton = document.querySelector('.error__button');
   errorMessageCloseButton.addEventListener('click', onMessagePopUpClose);
 
-  const errorMessage = document.querySelector('.error');
-  errorMessage.addEventListener('click', onMessagePopUpClose);
+  const errorMessageBackground = document.querySelector('.error__blocker');
+  errorMessageBackground.addEventListener('click', onMessagePopUpClose);
 };
 
 function onMessagePopUpClose() {

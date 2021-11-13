@@ -22,8 +22,8 @@ const formSubmitSuccess = () => {
   const successMessageCloseButton = document.querySelector('.success__button');
   successMessageCloseButton.addEventListener('click', onMessagePopUpClose);
 
-  const successMessage = document.querySelector('.success');
-  successMessage.addEventListener('click', onMessagePopUpClose);
+  const successMessageBackground = document.querySelector('.success__blocker');
+  successMessageBackground.addEventListener('click', onMessagePopUpClose);
 };
 
 function onMessagePopUpClose() {
