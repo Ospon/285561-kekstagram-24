@@ -21,6 +21,4 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-export {
-  showAlert
-};
+export { showAlert };

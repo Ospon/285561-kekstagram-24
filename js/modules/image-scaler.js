@@ -1,14 +1,14 @@
+const SCALE_STEP = 0.25;
+const MAX_SCALE_RANGE = 1;
+const MIN_SCALE_RANGE = 0.25;
+const DEFAULT_SCALE_VALUE = '100%';
+
 const imageEditor = document.querySelector('.img-upload__overlay');
 const imageScaleContainer = imageEditor.querySelector('.img-upload__scale');
 const scaleValue = imageScaleContainer.querySelector('.scale__control--value');
 const scaleBiggerButton = imageScaleContainer.querySelector('.scale__control--bigger');
 const scaleSmallerButton = imageScaleContainer.querySelector('.scale__control--smaller');
 const bigImagePreview = imageEditor.querySelector('.img-upload__preview').querySelector('img');
-
-const SCALE_STEP = 0.25;
-const MAX_SCALE_RANGE = 1;
-const MIN_SCALE_RANGE = 0.25;
-const DEFAULT_SCALE_VALUE = '100%';
 
 let currentScaleValue =  parseInt(scaleValue.value, 10) / 100;
 
@@ -19,7 +19,7 @@ const setDefaultImageScale = () => {
   currentScaleValue = defaultContainer;
 };
 
-const increaseImageScale = () => {
+const onImageScaleIncrease = () => {
   if (currentScaleValue < MAX_SCALE_RANGE) {
     currentScaleValue = currentScaleValue + SCALE_STEP;
     bigImagePreview.style.transform = `scale(${currentScaleValue})`;
@@ -27,7 +27,7 @@ const increaseImageScale = () => {
   }
 };
 
-const decreaseImageScale = () => {
+const onImageScaleDecrease = () => {
   if (currentScaleValue > MIN_SCALE_RANGE) {
     currentScaleValue = currentScaleValue - SCALE_STEP;
     bigImagePreview.style.transform = `scale(${currentScaleValue})`;
@@ -35,4 +35,4 @@ const decreaseImageScale = () => {
   }
 };
 
-export { scaleBiggerButton, scaleSmallerButton, increaseImageScale, decreaseImageScale, setDefaultImageScale };
+export { scaleBiggerButton, scaleSmallerButton, onImageScaleIncrease, onImageScaleDecrease, setDefaultImageScale };

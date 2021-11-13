@@ -1,4 +1,4 @@
-import { closeImageEditor } from './form-image-upload.js';
+import { onImageEditorClose } from './form-image-upload.js';
 import { isEscapeKey } from '../utils/keys-checks.js';
 import { toggleWindowBlocker } from '../utils/window-blocker.js';
 
@@ -7,12 +7,12 @@ const successMessageTemplate = document.querySelector('#success').content;
 const onPopupEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    closeMessagePopUp();
+    onMessagePopUpClose();
   }
 };
 
-function formSubmitSuccess() {
-  closeImageEditor();
+const formSubmitSuccess = () => {
+  onImageEditorClose();
   toggleWindowBlocker();
   const element = successMessageTemplate.cloneNode(true);
   document.body.appendChild(element);
@@ -20,24 +20,24 @@ function formSubmitSuccess() {
   document.addEventListener('keydown', onPopupEscKeydown);
 
   const successMessageCloseButton = document.querySelector('.success__button');
-  successMessageCloseButton.addEventListener('click', closeMessagePopUp);
+  successMessageCloseButton.addEventListener('click', onMessagePopUpClose);
 
   const successMessage = document.querySelector('.success');
-  successMessage.addEventListener('click', closeMessagePopUp);
-}
+  successMessage.addEventListener('click', onMessagePopUpClose);
+};
 
-function closeMessagePopUp() {
+function onMessagePopUpClose() {
   toggleWindowBlocker();
 
   document.removeEventListener('keydown', onPopupEscKeydown);
 
   const successMessageCloseButton = document.querySelector('.success__button');
-  successMessageCloseButton.removeEventListener('click', closeMessagePopUp);
+  successMessageCloseButton.removeEventListener('click', onMessagePopUpClose);
 
   const successMessage = document.querySelector('.success');
-  successMessage.removeEventListener('click', closeMessagePopUp);
+  successMessage.removeEventListener('click', onMessagePopUpClose);
 
   successMessage.remove();
 }
 
-export { formSubmitSuccess, closeMessagePopUp };
+export { formSubmitSuccess };

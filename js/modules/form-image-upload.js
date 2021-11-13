@@ -1,7 +1,7 @@
 import { isEscapeKey } from '../utils/keys-checks.js';
 import { toggleWindowBlocker } from '../utils/window-blocker.js';
-import { scaleBiggerButton, scaleSmallerButton, increaseImageScale, decreaseImageScale, setDefaultImageScale } from './image-scaler.js';
-import { filteringImage, initializeSlider, removeSlider } from './filter-slider.js';
+import { scaleBiggerButton, scaleSmallerButton, onImageScaleIncrease, onImageScaleDecrease, setDefaultImageScale } from './image-scaler.js';
+import { onImageFilterChange, initializeSlider, removeSlider } from './filter-slider.js';
 import { sendData } from './api.js';
 import { formSubmitError } from './form-submit-error.js';
 import { formSubmitSuccess } from './form-submit-success.js';
@@ -14,24 +14,26 @@ const MAX_IMAGE_DESCRIPTION_LENGTH = 140;
 const MAX_IMAGE_DESCRIPTION_LENGTH_MESSAGE = `Длина комментария не может составлять больше ${MAX_IMAGE_DESCRIPTION_LENGTH} символов`;
 const DEFAULT_BORDER_STYLE = '1px solid rgb(118, 118, 118)';
 const WARNING_BORDER_STYLE = '2px solid red';
+
 const regHashtagExp = /^#[A-Za-zА-Яа-яЁё0-9]{1,19}$/;
+
 const uploadImageButton = document.querySelector('#upload-file');
 const imageEditor = document.querySelector('.img-upload__overlay');
+const imageUploadForm = document.querySelector('.img-upload__form');
 const closeButton = imageEditor.querySelector('.img-upload__cancel');
 const hashtagInput = imageEditor.querySelector('.text__hashtags');
 const imageDescriptionInput = imageEditor.querySelector('.text__description');
 const effectsContainer = imageEditor.querySelector('.effects__list');
-const imageUploadForm = document.querySelector('.img-upload__form');
 const noneEffect = imageEditor.querySelector('[value=none]');
 
 const onPopupEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    closeImageEditor();
+    onImageEditorClose();
   }
 };
 
-const stopEscKeydownPropagation = (evt) => {
+const onEscKeydownStopPropagation = (evt) => {
   if (isEscapeKey(evt)) {
     evt.stopPropagation();
   }
@@ -39,13 +41,12 @@ const stopEscKeydownPropagation = (evt) => {
 
 const isValidHashtag = (element) => regHashtagExp.test(element);
 
-/* const hasDuplicatedItem = (array) => array.map((item) => item.toLowerCase()).some((item, index) => array.indexOf(item) < index); */
 const hasDuplicatedItem = (array) => {
   const lowerCasedArray = array.map((item) => item.toLowerCase());
   return new Set(lowerCasedArray).size !== lowerCasedArray.length;
 };
 
-const getHashtagValidityMessage= (element, array) => {
+const getHashtagValidityMessage = (element, array) => {
   if (!isValidHashtag(element)) {
     return GENERAL_HASHTAGS_REQUIREMENTS;
   }
@@ -58,18 +59,18 @@ const getHashtagValidityMessage= (element, array) => {
   return '';
 };
 
-const hashtagsInputValidate = () => {
-  const hashtagsArray = hashtagInput.value.split(' ');
+const onHashtagsInput = () => {
+  const hashtags = hashtagInput.value.split(' ');
 
-  hashtagsArray.forEach((element) => {
-    hashtagInput.setCustomValidity(getHashtagValidityMessage(element, hashtagsArray));
+  hashtags.forEach((element) => {
+    hashtagInput.setCustomValidity(getHashtagValidityMessage(element, hashtags));
     hashtagInput.reportValidity();
     const validityState = hashtagInput.checkValidity();
     hashtagInput.style.border = validityState ?  hashtagInput.style.border = DEFAULT_BORDER_STYLE : hashtagInput.style.border = WARNING_BORDER_STYLE;
   });
 };
 
-const imageDescriptionInputValidate = () => {
+const onImageDescriptionInput = () => {
   if (imageDescriptionInput.value.length > MAX_IMAGE_DESCRIPTION_LENGTH) {
     imageDescriptionInput.setCustomValidity(MAX_IMAGE_DESCRIPTION_LENGTH_MESSAGE);
     imageDescriptionInput.style.border = WARNING_BORDER_STYLE;
@@ -79,53 +80,53 @@ const imageDescriptionInputValidate = () => {
   imageDescriptionInput.reportValidity();
 };
 
-function openImageEditor() {
+function onImageEditorOpen() {
   imageEditor.classList.remove('hidden');
   toggleWindowBlocker();
 
   document.addEventListener('keydown', onPopupEscKeydown);
-  hashtagInput.addEventListener('keydown', stopEscKeydownPropagation);
-  hashtagInput.addEventListener('input', hashtagsInputValidate);
-  imageDescriptionInput.addEventListener('input', imageDescriptionInputValidate);
-  imageDescriptionInput.addEventListener('keydown', stopEscKeydownPropagation);
-  closeButton.addEventListener('click', closeImageEditor);
+  hashtagInput.addEventListener('keydown', onEscKeydownStopPropagation);
+  hashtagInput.addEventListener('input', onHashtagsInput);
+  imageDescriptionInput.addEventListener('input', onImageDescriptionInput);
+  imageDescriptionInput.addEventListener('keydown', onEscKeydownStopPropagation);
+  closeButton.addEventListener('click', onImageEditorClose);
   setDefaultImageScale();
-  scaleBiggerButton.addEventListener('click', increaseImageScale);
-  scaleSmallerButton.addEventListener('click', decreaseImageScale);
-  uploadImageButton.removeEventListener('change', openImageEditor);
+  scaleBiggerButton.addEventListener('click', onImageScaleIncrease);
+  scaleSmallerButton.addEventListener('click', onImageScaleDecrease);
+  uploadImageButton.removeEventListener('change', onImageEditorOpen);
   initializeSlider();
-  effectsContainer.addEventListener('change', filteringImage);
+  effectsContainer.addEventListener('change', onImageFilterChange);
 }
 
-function setDefaultFormState () {
+const setDefaultFormState = () => {
   uploadImageButton.value = '';
   hashtagInput.value = '';
   imageDescriptionInput.value = '';
   noneEffect.checked;
   hashtagInput.style.border = DEFAULT_BORDER_STYLE;
   imageDescriptionInput.style.border = DEFAULT_BORDER_STYLE;
-}
+};
 
-function closeImageEditor() {
+function onImageEditorClose() {
   imageEditor.classList.add('hidden');
   toggleWindowBlocker();
   setDefaultFormState();
   removeSlider();
 
-  uploadImageButton.addEventListener('change', openImageEditor);
+  uploadImageButton.addEventListener('change', onImageEditorOpen);
 
   document.removeEventListener('keydown', onPopupEscKeydown);
-  hashtagInput.removeEventListener('keydown', stopEscKeydownPropagation);
-  hashtagInput.removeEventListener('input', hashtagsInputValidate);
-  imageDescriptionInput.removeEventListener('input', imageDescriptionInputValidate);
-  imageDescriptionInput.removeEventListener('keydown', stopEscKeydownPropagation);
-  closeButton.removeEventListener('click', closeImageEditor);
-  scaleBiggerButton.removeEventListener('click', increaseImageScale);
-  scaleSmallerButton.removeEventListener('click', decreaseImageScale);
-  effectsContainer.removeEventListener('change', filteringImage);
+  hashtagInput.removeEventListener('keydown', onEscKeydownStopPropagation);
+  hashtagInput.removeEventListener('input', onHashtagsInput);
+  imageDescriptionInput.removeEventListener('input', onImageDescriptionInput);
+  imageDescriptionInput.removeEventListener('keydown', onEscKeydownStopPropagation);
+  closeButton.removeEventListener('click', onImageEditorClose);
+  scaleBiggerButton.removeEventListener('click', onImageScaleIncrease);
+  scaleSmallerButton.removeEventListener('click', onImageScaleDecrease);
+  effectsContainer.removeEventListener('change', onImageFilterChange);
 }
 
-uploadImageButton.addEventListener('change', () => openImageEditor());
+uploadImageButton.addEventListener('change', () => onImageEditorOpen());
 
 const setUserFormSubmit = (onSucces, onFail) => {
   imageUploadForm.addEventListener('submit', (evt) => {
@@ -141,4 +142,4 @@ const setUserFormSubmit = (onSucces, onFail) => {
 
 setUserFormSubmit(formSubmitSuccess, formSubmitError);
 
-export { openImageEditor, closeImageEditor };
+export { onImageEditorOpen, onImageEditorClose };

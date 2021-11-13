@@ -4,7 +4,7 @@ const fileChooser = document.querySelector('#upload-file');
 const previewContainer = document.querySelector('.img-upload__preview');
 const preview = previewContainer.querySelector('img');
 
-const seeUploadImagePreview = () => {
+const onUploadImageChange = () => {
   const file = fileChooser.files[0];
   const fileName = file.name.toLowerCase();
 
@@ -15,4 +15,4 @@ const seeUploadImagePreview = () => {
   }
 };
 
-fileChooser.addEventListener('change', seeUploadImagePreview);
+fileChooser.addEventListener('change', onUploadImageChange);

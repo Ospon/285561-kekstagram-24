@@ -21,7 +21,7 @@ let commentsCollection = [];
 const onPopupEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    closePostPreview();
+    onPostPreviewClose();
   }
 };
 
@@ -38,7 +38,7 @@ const updateCommentsList = (commentsCount) => {
   showedCommentsCount.textContent === commentCount.textContent ? loadMoreCommentsButton.classList.add('hidden') : loadMoreCommentsButton.classList.remove('hidden');
 };
 
-const showMoreComments = (evt) => {
+const onMoreCommentsShow = (evt) => {
   evt.preventDefault();
   showedComments = showedComments + 5;
   updateCommentsList(showedComments);
@@ -86,19 +86,19 @@ const openPostPreview = (postData, evt) => {
     fillPostData(postData, evt);
 
     bigPicture.classList.remove('hidden');
-    closeButton.addEventListener('click', closePostPreview);
+    closeButton.addEventListener('click', onPostPreviewClose);
     document.addEventListener('keydown', onPopupEscKeydown);
-    loadMoreCommentsButton.addEventListener('click', showMoreComments);
+    loadMoreCommentsButton.addEventListener('click', onMoreCommentsShow);
   }
 };
 
-function closePostPreview() {
+function onPostPreviewClose() {
   toggleWindowBlocker();
 
-  closeButton.removeEventListener('click', closePostPreview);
+  closeButton.removeEventListener('click', onPostPreviewClose);
   document.removeEventListener('keydown', onPopupEscKeydown);
   bigPicture.classList.add('hidden');
-  loadMoreCommentsButton.removeEventListener('click', showMoreComments);
+  loadMoreCommentsButton.removeEventListener('click', onMoreCommentsShow);
 }
 
 const setOpenPostPreviewClick = (cb) => {
