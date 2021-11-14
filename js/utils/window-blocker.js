@@ -1,5 +1,5 @@
-function toggleWindowBlocker () {
+const toggleWindowBlocker = () => {
   document.body.classList.toggle('modal-open');
-}
+};
 
 export { toggleWindowBlocker };

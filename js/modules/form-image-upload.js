@@ -26,6 +26,8 @@ const imageDescriptionInput = imageEditor.querySelector('.text__description');
 const effectsContainer = imageEditor.querySelector('.effects__list');
 const noneEffect = imageEditor.querySelector('[value=none]');
 
+let onImageEditorClose = '';
+
 const onPopupEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
@@ -42,8 +44,8 @@ const onEscKeydownStopPropagation = (evt) => {
 const isValidHashtag = (element) => regHashtagExp.test(element);
 
 const hasDuplicatedItem = (array) => {
-  const lowerCasedArray = array.map((item) => item.toLowerCase());
-  return new Set(lowerCasedArray).size !== lowerCasedArray.length;
+  const hashtags = array.map((item) => item.toLowerCase());
+  return new Set(hashtags).size !== hashtags.length;
 };
 
 const getHashtagValidityMessage = (element, array) => {
@@ -83,7 +85,16 @@ const onImageDescriptionInput = () => {
   imageDescriptionInput.reportValidity();
 };
 
-function onImageEditorOpen() {
+const setDefaultFormState = () => {
+  uploadImageButton.value = '';
+  hashtagInput.value = '';
+  imageDescriptionInput.value = '';
+  noneEffect.checked = true;
+  hashtagInput.style.border = DEFAULT_BORDER_STYLE;
+  imageDescriptionInput.style.border = DEFAULT_BORDER_STYLE;
+};
+
+const onImageEditorOpen = () => {
   imageEditor.classList.remove('hidden');
   toggleWindowBlocker();
 
@@ -99,18 +110,9 @@ function onImageEditorOpen() {
   uploadImageButton.removeEventListener('change', onImageEditorOpen);
   initializeSlider();
   effectsContainer.addEventListener('change', onImageFilterChange);
-}
-
-const setDefaultFormState = () => {
-  uploadImageButton.value = '';
-  hashtagInput.value = '';
-  imageDescriptionInput.value = '';
-  noneEffect.checked = true;
-  hashtagInput.style.border = DEFAULT_BORDER_STYLE;
-  imageDescriptionInput.style.border = DEFAULT_BORDER_STYLE;
 };
 
-function onImageEditorClose() {
+onImageEditorClose = () => {
   imageEditor.classList.add('hidden');
   toggleWindowBlocker();
   setDefaultFormState();
@@ -127,7 +129,7 @@ function onImageEditorClose() {
   scaleBiggerButton.removeEventListener('click', onImageScaleIncrease);
   scaleSmallerButton.removeEventListener('click', onImageScaleDecrease);
   effectsContainer.removeEventListener('change', onImageFilterChange);
-}
+};
 
 uploadImageButton.addEventListener('change', () => onImageEditorOpen());
 

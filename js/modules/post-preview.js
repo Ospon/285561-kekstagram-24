@@ -17,6 +17,7 @@ const loadMoreCommentsButton = bigPicture.querySelector('.social__comments-loade
 const showedCommentsCount = bigPicture.querySelector('.showed-comments-count');
 let showedComments = DEFAULT_COMMENTS_VALUE;
 let commentsCollection = [];
+let onPostPreviewClose = '';
 
 const onPopupEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
@@ -92,14 +93,14 @@ const openPostPreview = (postData, evt) => {
   }
 };
 
-function onPostPreviewClose() {
+onPostPreviewClose = () => {
   toggleWindowBlocker();
 
   closeButton.removeEventListener('click', onPostPreviewClose);
   document.removeEventListener('keydown', onPopupEscKeydown);
   bigPicture.classList.add('hidden');
   loadMoreCommentsButton.removeEventListener('click', onMoreCommentsShow);
-}
+};
 
 const setOpenPostPreviewClick = (cb) => {
   picturesContaner.addEventListener('click', (evt) => {

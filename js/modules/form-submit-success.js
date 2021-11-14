@@ -4,6 +4,8 @@ import { toggleWindowBlocker } from '../utils/window-blocker.js';
 
 const successMessageTemplate = document.querySelector('#success').content;
 
+let onMessagePopUpClose = '';
+
 const onPopupEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
@@ -26,7 +28,7 @@ const formSubmitSuccess = () => {
   successMessageBackground.addEventListener('click', onMessagePopUpClose);
 };
 
-function onMessagePopUpClose() {
+onMessagePopUpClose = () => {
   toggleWindowBlocker();
 
   document.removeEventListener('keydown', onPopupEscKeydown);
@@ -38,6 +40,6 @@ function onMessagePopUpClose() {
   successMessage.removeEventListener('click', onMessagePopUpClose);
 
   successMessage.remove();
-}
+};
 
 export { formSubmitSuccess };
