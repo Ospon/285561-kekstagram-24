@@ -8,12 +8,12 @@ const sliderOptions = {
   connect: 'lower',
 };
 const effects = {
-  CHROME: new FilterEffect('effects__preview--chrome', 'chrome', 0, 1, 0.1, 1, 'grayscale', '', true),
-  SEPIA: new FilterEffect('effects__preview--sepia', 'sepia', 0, 1, 0.1, 1, 'sepia', '', true),
-  MARVIN: new FilterEffect('effects__preview--marvin', 'marvin', 0, 100, 1, 100, 'invert', '%', true),
-  PHOBOS: new FilterEffect('effects__preview--phobos', 'phobos', 0, 3, 0.1, 3, 'blur', 'px', true),
-  HEAT: new FilterEffect('effects__preview--heat', 'heat', 1, 3, 0.1, 3, 'brightness', '', true),
-  NONE: new FilterEffect('', 'none', 0, 1, 0.1, 0, '', '', false),
+  CHROME: new FilterEffect('effects__preview--chrome', 'chrome', 0, 1, 0.1, 1, 'grayscale', ''),
+  SEPIA: new FilterEffect('effects__preview--sepia', 'sepia', 0, 1, 0.1, 1, 'sepia', ''),
+  MARVIN: new FilterEffect('effects__preview--marvin', 'marvin', 0, 100, 1, 100, 'invert', '%'),
+  PHOBOS: new FilterEffect('effects__preview--phobos', 'phobos', 0, 3, 0.1, 3, 'blur', 'px'),
+  HEAT: new FilterEffect('effects__preview--heat', 'heat', 1, 3, 0.1, 3, 'brightness', ''),
+  NONE: new FilterEffect('', 'none', 0, 1, 0.1, 0, '', ''),
 };
 
 const imageEditor = document.querySelector('.img-upload__overlay');
@@ -22,7 +22,7 @@ const sliderBackground = imageEditor.querySelector('.img-upload__effect-level');
 const effectValue = imageEditor.querySelector('.effect-level__value');
 const imagePreview = imageEditor.querySelector('.img-upload__preview');
 
-function FilterEffect(className, name, sliderMinRange, sliderMaxRange, sliderStep, sliderStart, styleProperty, stylePropertyValue, isSliderActive) {
+function FilterEffect(className, name, sliderMinRange, sliderMaxRange, sliderStep, sliderStart, styleProperty, stylePropertyValue) {
   this.className = className;
   this.name = name;
   this.sliderMinRange = sliderMinRange;
@@ -31,7 +31,6 @@ function FilterEffect(className, name, sliderMinRange, sliderMaxRange, sliderSte
   this.sliderStart = sliderStart;
   this.styleProperty = styleProperty;
   this.stylePropertyValue = stylePropertyValue;
-  this.isSliderActive = isSliderActive;
 }
 
 const removeEffectClasses = (element) => {
