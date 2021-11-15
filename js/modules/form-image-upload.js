@@ -43,22 +43,22 @@ const onEscKeydownStopPropagation = (evt) => {
 
 const isValidHashtag = (element) => regHashtagExp.test(element);
 
-const hasDuplicatedItem = (array) => {
-  const hashtags = array.map((item) => item.toLowerCase());
-  return new Set(hashtags).size !== hashtags.length;
+const hasDuplicatedItem = (hashtags) => {
+  const lowerCasedHashtags = hashtags.map((item) => item.toLowerCase());
+  return new Set(lowerCasedHashtags).size !== lowerCasedHashtags.length;
 };
 
-const getHashtagValidityMessage = (element, array) => {
-  if (array[0] === '' && array.length === 1) {
+const getHashtagValidityMessage = (element, hashtags) => {
+  if (hashtags[0] === '' && hashtags.length === 1) {
     return '';
   }
   if (!isValidHashtag(element)) {
     return GENERAL_HASHTAGS_REQUIREMENTS;
   }
-  if (hasDuplicatedItem(array)) {
+  if (hasDuplicatedItem(hashtags)) {
     return DUPLICATED_HASHTAG_MESSAGE;
   }
-  if (array.length > MAX_HASHTAGS_ALLOWED) {
+  if (hashtags.length > MAX_HASHTAGS_ALLOWED) {
     return MAX_HASHTAGS_ALLOWED_MESSAGE;
   }
   return '';

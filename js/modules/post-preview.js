@@ -32,8 +32,8 @@ const clearExistPostComments = () => {
 
 const updateCommentsList = (commentsCount) => {
   clearExistPostComments();
-  const commentsArray = [...commentsCollection];
-  commentsArray.slice(0, commentsCount).forEach((item) => commentsContainer.appendChild(item));
+  const comments = [...commentsCollection];
+  comments.slice(0, commentsCount).forEach((item) => commentsContainer.appendChild(item));
   showedCommentsCount.textContent = commentsContainer.children.length;
 
   showedCommentsCount.textContent === commentCount.textContent ? loadMoreCommentsButton.classList.add('hidden') : loadMoreCommentsButton.classList.remove('hidden');
@@ -74,10 +74,10 @@ const fillPostData = (posts, evt) => {
   likesCount.textContent = posts[index].likes;
   commentCount.textContent = posts[index].comments.length;
 
-  const arrayOfComments = posts[index].comments;
+  const commentsList = posts[index].comments;
 
   clearExistPostComments();
-  renderComments(arrayOfComments);
+  renderComments(commentsList);
   initializePostComments();
 };
 
